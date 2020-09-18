@@ -140,13 +140,17 @@ void getRiskingWinningPercentages(double &statistics[]) {
             double takeProfitPrice = OrderTakeProfit();
             double commission = OrderCommission() * -1;
             
+            double point=MarketInfo(OrderSymbol(),MODE_POINT);
+            double ticksize=MarketInfo(OrderSymbol(), MODE_TICKSIZE);
+            double tickValue=MarketInfo(OrderSymbol(), MODE_TICKVALUE);
+            
             if (OrderType() == OP_BUY) {
-               possibleLoss = possibleLoss + commission + (openPrice - stopLossPrice) * OrderLots() * 1000;
-               possibleWin = possibleWin + (takeProfitPrice - openPrice) * OrderLots() * 1000;
+               possibleLoss = possibleLoss + commission + (openPrice - stopLossPrice) * OrderLots() * 1000 * tickValue;
+               possibleWin = possibleWin - commission + (takeProfitPrice - openPrice) * OrderLots() * 1000 * tickValue;
             }
             if (OrderType() == OP_SELL) {
-               possibleLoss = possibleLoss + commission + (stopLossPrice - openPrice) * OrderLots() * 1000;
-               possibleWin = possibleWin + (openPrice - takeProfitPrice) * OrderLots() * 1000;
+               possibleLoss = possibleLoss + commission + (stopLossPrice - openPrice) * OrderLots() * 1000 * tickValue;
+               possibleWin = possibleWin - commission + (openPrice - takeProfitPrice) * OrderLots() * 1000 * tickValue;
             }
          }
       }
@@ -157,3 +161,4 @@ void getRiskingWinningPercentages(double &statistics[]) {
    statistics[2] = possibleWin;
    statistics[3] = possibleWin / accountBalance * 100;
 }
+
