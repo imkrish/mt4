@@ -161,4 +161,3 @@ void getRiskingWinningPercentages(double &statistics[]) {
    statistics[2] = possibleWin;
    statistics[3] = possibleWin / accountBalance * 100;
 }
-
